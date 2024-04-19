@@ -1,0 +1,42 @@
+{
+  "root": true,
+  "env": {
+    "es2023": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended-type-checked",
+    "plugin:@typescript-eslint/stylistic-type-checked",
+    "plugin:sonarjs/recommended-legacy",
+    "plugin:unicorn/recommended",
+    "plugin:import-x/recommended",
+    "plugin:import-x/typescript",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "sourceType": "module",
+    "project": "tsconfig.json"
+  },
+  "plugins": ["@typescript-eslint", "sonarjs", "unicorn", "import"],
+  "rules": {
+    "unicorn/filename-case": [
+      "error",
+      {
+        "cases": {
+          "camelCase": true,
+          "pascalCase": true,
+          "kebabCase": false,
+          "snakeCase": false
+        }
+      }
+    ]
+  },
+  "settings": {
+    "import-x/resolver": {
+      "typescript": true,
+      "node": true
+    }
+  }
+}

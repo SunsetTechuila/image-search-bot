@@ -1,0 +1,44 @@
+{
+  "name": "image-search-bot",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "pnpm": "please-use-bun",
+    "npm": "please-use-bun",
+    "yarn": "please-use-bun"
+  },
+  "scripts": {
+    "start": "bun src/index.ts",
+    "dev": "bun src/index.ts --watch",
+    "check-all": "bun test && bun lint && bun type-check && bun format:check",
+    "check-all:fix": "bun lint:fix && bun format",
+    "test": "bun test",
+    "format": "bun format:base --write",
+    "format:check": "bun format:base --check",
+    "format:base": "bun --bun prettier . --cache",
+    "lint": "bun --bun eslint . --cache",
+    "lint:fix": "bun lint --fix",
+    "type-check": "bun --bun tsc",
+    "get-tg-session": "bun scripts/getTelegramSession.ts"
+  },
+  "dependencies": {
+    "@mtcute/bun": "^0.12.0",
+    "grammy": "grammy-1.23.0.tgz",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@total-typescript/ts-reset": "^0.5.1",
+    "@types/bun": "^1.1.2",
+    "@typescript-eslint/eslint-plugin": "^7.9.0",
+    "@typescript-eslint/parser": "^7.9.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-import-x": "^0.5.0",
+    "eslint-plugin-sonarjs": "^1.0.3",
+    "eslint-plugin-unicorn": "^53.0.0",
+    "prettier": "^3.2.5",
+    "tslib": "^2.6.2",
+    "typescript": "^5.4.5"
+  }
+}
