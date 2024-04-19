@@ -1,0 +1,9 @@
+{
+  "blocks": [
+    {
+      "block": { "block": "i-react-ajax-adapter:ajax" },
+      "params": { "type": "ImagesApp", "ajaxKey": "serpList/fetch" },
+      "version": 2
+    }
+  ]
+}

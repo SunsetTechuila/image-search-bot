@@ -1,0 +1,13 @@
+fetch("wss://zws4-1.web.telegram.org/apiws", {
+  "headers": {
+    "accept-language": "en,ru;q=0.9,en-US;q=0.8",
+    "cache-control": "no-cache",
+    "pragma": "no-cache",
+    "sec-websocket-extensions": "permessage-deflate; client_max_window_bits",
+    "sec-websocket-key": "CqxWdQ8NlQbfV0ehLlLJGg==",
+    "sec-websocket-protocol": "binary",
+    "sec-websocket-version": "13"
+  },
+  "body": null,
+  "method": "GET"
+});

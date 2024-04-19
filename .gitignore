@@ -1,0 +1,6 @@
+node_modules/
+
+.eslintcache
+
+.wrangler/
+.dev.vars

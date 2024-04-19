@@ -1,0 +1,44 @@
+{
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=9",
+    "npm": "please-use-pnpm",
+    "yarn": "please-use-pnpm"
+  },
+  "packageManager": "pnpm@9.1.0",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "check-all": "pnpm lint && pnpm type-check && pnpm format:check",
+    "check-all:fix": "pnpm lint:fix && pnpm format",
+    "format": "pnpm format:base --write",
+    "format:check": "pnpm format:base --check",
+    "format:base": "prettier . --cache",
+    "lint": "eslint . --cache",
+    "lint:fix": "pnpm lint --fix",
+    "type-check": "tsc",
+    "get-tg-session": "pnpm scripts/getTelegramSession.ts"
+  },
+  "dependencies": {
+    "gramjs-cfw": "file:gramjs-cfw-0.0.1.tgz",
+    "grammy": "^1.23.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240502.0",
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "@typescript-eslint/parser": "^7.8.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-import-x": "^0.5.0",
+    "eslint-plugin-sonarjs": "^1.0.3",
+    "eslint-plugin-unicorn": "^53.0.0",
+    "prettier": "^3.2.5",
+    "telegram": "2.21.1",
+    "typescript": "^5.4.5",
+    "vite-node": "^1.6.0",
+    "wrangler": "3.18.0"
+  }
+}
