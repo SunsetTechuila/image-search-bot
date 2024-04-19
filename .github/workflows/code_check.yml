@@ -1,0 +1,25 @@
+name: Check Code
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - src/**/*
+      - package.json
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Check code
+        run: bun check-all
