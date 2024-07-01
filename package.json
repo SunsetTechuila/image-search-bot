@@ -22,7 +22,7 @@
     "get-tg-session": "bun scripts/getTelegramSession.ts"
   },
   "dependencies": {
-    "@mtcute/bun": "^0.12.0",
+    "@mtcute/bun": "^0.15.0",
     "grammy": "grammy-1.23.0.tgz",
     "zod": "^3.23.8"
   },
