@@ -1,0 +1,27 @@
+import { test, expect } from "bun:test";
+
+import ImageSearchBot from ".";
+
+const {
+  TELEGRAM_BOT_TOKEN: botToken,
+  ALLOWED_USERS: allowedUsers,
+  SEARCH_SERVER_ADDRESS: searchServerAddress,
+  SEARCH_SERVER_PASSWORD: searchServerPassword,
+} = process.env;
+if (!botToken || !allowedUsers || !searchServerAddress || !searchServerPassword) {
+  throw new Error("Missing environment variables");
+}
+
+const request = {};
+
+test("does return a response", async () => {
+  const imageSearchBot = new ImageSearchBot({
+    frameworkAdapter: "bun",
+    botToken,
+    allowedUserIds: allowedUsers.split(",").map((id) => Number.parseInt(id)),
+    searchServerAddress,
+    searchServerPassword,
+  });
+
+  const response = await imageSearchBot.processRequest(request);
+});

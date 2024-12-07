@@ -1,0 +1,36 @@
+{
+  "name": "image-search-bot",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --experimental-json-config",
+    "deploy": "wrangler deploy --experimental-json-config",
+    "check-all": "bun --bun concurrently --kill-others=failure 'bun test' 'bun lint' 'bun check-types' 'bun format:check'",
+    "check-types": "bun --bun tsc",
+    "format": "bun format:base --write",
+    "format:check": "bun format:base --check",
+    "format:base": "bun --bun prettier . --cache --cache-location='../../.cache/prettier/cache'",
+    "lint": "bun --bun eslint . --cache --cache-location='../../.cache/eslint/'",
+    "test": "bun test",
+    "update-workers-types": "wrangler types './src/types/wrangler/worker-configuration.d.ts' --env-interface='Environment' --x-include-runtime='./src/types/wrangler/runtime.d.ts' --experimental-json-config"
+  },
+  "dependencies": {
+    "grammy": "1.32.0",
+    "shared": "workspace:*",
+    "wrangler": "^3.91.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.16.0",
+    "@types/bun": "^1.1.14",
+    "concurrently": "^9.1.0",
+    "eslint": "^9.16.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-import-resolver-typescript": "^3.6.3",
+    "eslint-plugin-import-x": "^4.5.0",
+    "eslint-plugin-sonarjs": "^3.0.0",
+    "eslint-plugin-unicorn": "^56.0.1",
+    "prettier": "^3.4.1",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.17.0"
+  }
+}

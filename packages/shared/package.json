@@ -1,0 +1,19 @@
+{
+  "name": "shared",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check-all": "bun --bun concurrently --kill-others=failure 'bun lint' 'bun check-types' 'bun format:check'",
+    "check-types": "bun --bun tsc",
+    "format": "bun format:base --write",
+    "format:check": "bun format:base --check",
+    "format:base": "bun --bun prettier . --cache --cache-location='../../.cache/prettier/cache'",
+    "lint": "bun --bun eslint . --cache --cache-location='../../.cache/eslint/'"
+  },
+  "dependencies": {
+    "@total-typescript/ts-reset": "^0.6.1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

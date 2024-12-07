@@ -1,0 +1,6 @@
+{
+  "[typescript][json][yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "npm.packageManager": "bun"
+}

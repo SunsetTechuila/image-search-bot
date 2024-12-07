@@ -1,0 +1,96 @@
+name: Deploy Server
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - packages/image-search-server/src/**
+      - packages/image-search-server/package.json
+
+jobs:
+  check-credentials:
+    name: Check credentials
+    runs-on: ubuntu-latest
+    environment: production
+    outputs:
+      is_set: ${{ steps.check.outputs.is_set }}
+    steps:
+      - name: Check SSH credentials
+        id: check
+        run: |
+          if [[ '${{ secrets.SSH_KEY }}' && '${{ secrets.SSH_HOST }}' && '${{ secrets.SSH_USERNAME }}' ]]; then
+            echo "is_set=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_set=false" >> "$GITHUB_OUTPUT"
+            echo "SSH credentials are not set. Skipping deployment."
+          fi
+
+  check-package:
+    name: Check package
+    needs: check-credentials
+    if: ${{ needs.check-credentials.outputs.is_set == 'true' }}
+    uses: ./.github/workflows/check.yml
+    secrets: inherit
+    with:
+      cwd: packages/image-search-server
+
+  # blocker for commented: https://github.com/oven-sh/bun/issues/6567
+  deploy:
+    runs-on: ubuntu-latest
+    needs: check-package
+    environment: production
+    defaults:
+      run:
+        working-directory: packages/image-search-server
+    steps:
+      # - name: Checkout repo
+      #   uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo '${{ secrets.SSH_KEY }}' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo 'StrictHostKeyChecking no' >> ~/.ssh/config
+        working-directory: .
+
+      # - name: Setup Bun
+      #   uses: oven-sh/setup-bun@f4d14e03ff726c06358e5557344e1da148b56cf7
+
+      # - name: Install dependencies
+      #   run: bun install --frozen-lockfile --production
+
+      # - name: Build
+      #   run: bun run build
+
+      # - name: Deploy
+      #   run: |
+      #     scp dist/image-search-server '${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:~/image-search-server/image-search-server_new'
+      #     ssh '${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}' /bin/bash << EOF
+      #       pkill -f image-search-server || true
+      #       cd ~/image-search-server
+      #       mv image-search-server_new image-search-server
+      #       nohup ./image-search-server > /dev/null 2>&1 &
+      #     EOF
+
+      # temporary solution
+      - name: Deploy
+        uses: appleboy/ssh-action@66aa4d343bf909ac4fa0ac52f4e62a9adc354c95
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd
+            repository_name="$(basename '${{ github.repository }}')"
+            if [[ ! -d "$repository_name" ]]; then
+              git clone '${{ github.server_url }}/${{ github.repository }}'
+            fi
+            cd "$repository_name"
+            pkill -f 'bun run start$'
+            git fetch --all
+            git reset --hard origin/master
+            cd packages/image-search-server
+            bun install --frozen-lockfile --production
+            nohup bun run start > /dev/null 2>&1 &

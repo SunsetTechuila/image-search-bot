@@ -1,0 +1,133 @@
+name: Check Package
+
+on:
+  pull_request_target:
+  workflow_call:
+    inputs:
+      cwd:
+        type: string
+        default: "."
+
+jobs:
+  authorize:
+    name: Authorize
+    environment: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name != github.repository && 'external' || 'internal' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: true
+
+  check_format:
+    name: Check formatting
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.cwd }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Cache tools cache
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: tools-${{ runner.os }}-${{ github.sha }}
+          restore-keys: tools-${{ runner.os }}-
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Perform check
+        run: bun run format:check
+
+  check_types:
+    name: Check types
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.cwd }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Cache tools cache
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: tools-${{ runner.os }}-${{ github.sha }}
+          restore-keys: tools-${{ runner.os }}-
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Perform check
+        run: bun run check-types
+
+  lint:
+    name: Lint code
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.cwd }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Cache tools cache
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: tools-${{ runner.os }}-${{ github.sha }}
+          restore-keys: tools-${{ runner.os }}-
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Perform check
+        run: bun run lint
+
+  test:
+    name: Test code
+    runs-on: ubuntu-latest
+    needs: authorize
+    environment: testing
+    defaults:
+      run:
+        working-directory: ${{ inputs.cwd }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.ref }}
+
+      - name: Cache tools cache
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: tools-${{ runner.os }}-${{ github.sha }}
+          restore-keys: tools-${{ runner.os }}-
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Perform check
+        run: bun run test
+        env:
+          SEARCH_SERVER_ADDRESS: ${{ secrets.SEARCH_SERVER_ADDRESS }}
+          SEARCH_SERVER_PASSWORD: ${{ secrets.SEARCH_SERVER_PASSWORD }}
+          TELEGRAM_USER_SESSION: ${{ secrets.TELEGRAM_USER_SESSION }}
+          TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
+          TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          ALLOWED_USERS: ${{ secrets.ALLOWED_USERS }}

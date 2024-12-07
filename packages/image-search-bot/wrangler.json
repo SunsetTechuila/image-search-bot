@@ -1,0 +1,10 @@
+{
+  "$schema": "https://www.unpkg.com/wrangler/config-schema.json",
+  "name": "image-search-bot",
+  "main": "src/index.ts",
+  "compatibility_date": "2024-12-02",
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "image-search-server",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun exec 'NODE_ENV='development' bun --hot src/index.ts'",
+    "start": "bun src/index.ts",
+    "build": "bun build src/index.ts --compile --target=bun-linux-arm64 --minify --bytecode --outfile dist/image-search-server",
+    "check-all": "bun --bun concurrently --kill-others=failure 'bun test' 'bun lint' 'bun check-types' 'bun format:check'",
+    "check-types": "bun --bun tsc",
+    "format": "bun format:base --write",
+    "format:check": "bun format:base --check",
+    "format:base": "bun --bun prettier . --cache --cache-location='../../.cache/prettier/cache'",
+    "lint": "bun --bun eslint . --cache --cache-location='../../.cache/eslint/'",
+    "test": "bun test",
+    "get-tg-session": "bun scripts/getTelegramSession.ts"
+  },
+  "dependencies": {
+    "@mtcute/bun": "^0.17.0",
+    "elysia": "^1.1.25",
+    "shared": "workspace:*",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.16.0",
+    "@types/bun": "^1.1.14",
+    "concurrently": "^9.1.0",
+    "eslint": "^9.16.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-import-resolver-typescript": "^3.6.3",
+    "eslint-plugin-import-x": "^4.5.0",
+    "eslint-plugin-sonarjs": "^3.0.0",
+    "eslint-plugin-unicorn": "^56.0.1",
+    "prettier": "^3.4.1",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.17.0"
+  }
+}

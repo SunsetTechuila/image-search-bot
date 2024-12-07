@@ -1,0 +1,71 @@
+import { z } from "zod";
+import { Elysia, t } from "elysia";
+import type { Image } from "shared/types";
+
+import { YandexSearchAdapter } from "./modules";
+
+async function main() {
+  const EnvironmentVariablesSchema = z.object({
+    TELEGRAM_API_ID: z.coerce.number(),
+    TELEGRAM_API_HASH: z.string(),
+    TELEGRAM_USER_SESSION: z.string().optional(),
+    SEARCH_SERVER_PASSWORD: z.string(),
+  });
+
+  console.log("Checking environment variables...");
+  const { TELEGRAM_API_ID, TELEGRAM_API_HASH, TELEGRAM_USER_SESSION } =
+    EnvironmentVariablesSchema.parse(process.env);
+
+  console.log("Creating Yandex search adapter...");
+  const yandexSearchAdapter = await YandexSearchAdapter.create({
+    telegramApiId: TELEGRAM_API_ID,
+    telegramApiHash: TELEGRAM_API_HASH,
+    telegramUserSession: TELEGRAM_USER_SESSION,
+  });
+
+  console.log("Starting server...");
+  new Elysia()
+    .guard({
+      beforeHandle({ error, headers }) {
+        if (process.env.NODE_ENV === "development") {
+          console.log("[GUARD] Skipping password check in development mode");
+          return;
+        }
+
+        console.log("[GUARD] Checking password...");
+        if (headers.password !== process.env.SEARCH_SERVER_PASSWORD) {
+          console.log("[GUARD] Password check failed. Sending error...");
+          return error(401);
+        }
+      },
+    })
+    .get(
+      "/yandex",
+      async ({ query, error: returnError }) => {
+        console.log("Received request. Processing...");
+
+        let images: Image[];
+        try {
+          images = await yandexSearchAdapter.search(query.query, query.page);
+        } catch (error) {
+          console.error("Error occurred while processing request:", error);
+          return returnError(500);
+        }
+
+        console.log("Request processed. Sending response...");
+        return images;
+      },
+      {
+        query: t.Object({
+          query: t.String(),
+          page: t.Optional(t.Numeric()),
+        }),
+      },
+    )
+    .listen(process.env.PORT ?? 3000);
+}
+
+main().catch((error) => {
+  console.error("Error occurred while starting server:", error);
+  process.exit(1);
+});

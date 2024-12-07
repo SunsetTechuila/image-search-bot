@@ -1,0 +1,28 @@
+{
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "engines": {
+    "pnpm": "please-use-bun",
+    "npm": "please-use-bun",
+    "yarn": "please-use-bun"
+  },
+  "scripts": {
+    "check-all": "bun --filter '*' check-all",
+    "check-types": "bun --filter '*' check-types",
+    "format": "bun format:base --write",
+    "format:base": "bun --bun prettier . --cache --cache-location='./.cache/prettier/cache'",
+    "format:check": "bun format:base --check",
+    "lint": "bun --filter '*' lint",
+    "test": "bun --filter '*' test",
+    "prepare": "bun --bun husky || true"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.6.0",
+    "@commitlint/config-conventional": "^19.6.0",
+    "husky": "^9.1.7",
+    "prettier": "^3.4.1"
+  }
+}

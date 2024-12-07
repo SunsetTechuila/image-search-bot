@@ -1,0 +1,6 @@
+node_modules/
+.cache/
+
+# sadly, prettier picks up only .prettierignore in the cwd
+packages/image-search-bot/src/types/wrangler/
+packages/image-search-bot/.wrangler/
