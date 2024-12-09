@@ -37,6 +37,7 @@ jobs:
 
   # blocker for commented: https://github.com/oven-sh/bun/issues/6567
   deploy:
+    name: Deploy server
     runs-on: ubuntu-latest
     needs: check-package
     environment: production

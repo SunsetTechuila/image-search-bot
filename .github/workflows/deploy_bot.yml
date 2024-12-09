@@ -11,12 +11,13 @@ on:
 
 jobs:
   check-token:
+    name: Check for Cloudflare API token
     runs-on: ubuntu-latest
     environment: production
     outputs:
       is_set: ${{ steps.check.outputs.is_set }}
     steps:
-      - name: Check for Cloudflare API token
+      - name: Perform check
         id: check
         run: |
           if [[ '${{ secrets.CLOUDFLARE_API_TOKEN }}' ]]; then
