@@ -10,11 +10,19 @@ async function main() {
     TELEGRAM_API_HASH: z.string(),
     TELEGRAM_USER_SESSION: z.string().optional(),
     SEARCH_SERVER_PASSWORD: z.string(),
+    TLS_CERT_PATH: z.string().optional(),
+    TLS_KEY_PATH: z.string().optional(),
   });
 
   console.log("Checking environment variables...");
-  const { TELEGRAM_API_ID, TELEGRAM_API_HASH, TELEGRAM_USER_SESSION } =
-    EnvironmentVariablesSchema.parse(process.env);
+  const {
+    TELEGRAM_API_ID,
+    TELEGRAM_API_HASH,
+    TELEGRAM_USER_SESSION,
+    SEARCH_SERVER_PASSWORD,
+    TLS_CERT_PATH,
+    TLS_KEY_PATH,
+  } = EnvironmentVariablesSchema.parse(process.env);
 
   console.log("Creating Yandex search adapter...");
   const yandexSearchAdapter = await YandexSearchAdapter.create({
@@ -24,7 +32,14 @@ async function main() {
   });
 
   console.log("Starting server...");
-  new Elysia()
+  new Elysia({
+    serve: {
+      tls: {
+        cert: TLS_CERT_PATH ? Bun.file(TLS_CERT_PATH) : undefined,
+        key: TLS_KEY_PATH ? Bun.file(TLS_KEY_PATH) : undefined,
+      },
+    },
+  })
     .guard({
       beforeHandle({ error, headers }) {
         if (process.env.NODE_ENV === "development") {
@@ -33,7 +48,7 @@ async function main() {
         }
 
         console.log("[GUARD] Checking password...");
-        if (headers.password !== process.env.SEARCH_SERVER_PASSWORD) {
+        if (headers.password !== SEARCH_SERVER_PASSWORD) {
           console.log("[GUARD] Password check failed. Sending error...");
           return error(401);
         }
