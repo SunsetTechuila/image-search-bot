@@ -1,0 +1,11 @@
+services:
+  server:
+    container_name: image-search-server
+    build:
+      context: .
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./:/packages/image-search-server
+    ports:
+      - 3000:3000

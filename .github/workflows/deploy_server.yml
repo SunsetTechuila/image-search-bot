@@ -10,13 +10,13 @@ on:
 
 jobs:
   check-credentials:
-    name: Check credentials
+    name: Check for SSH credentials
     runs-on: ubuntu-latest
     environment: production
     outputs:
       is_set: ${{ steps.check.outputs.is_set }}
     steps:
-      - name: Check SSH credentials
+      - name: Perform check
         id: check
         run: |
           if [[ '${{ secrets.SSH_KEY }}' && '${{ secrets.SSH_HOST }}' && '${{ secrets.SSH_USERNAME }}' ]]; then
@@ -35,18 +35,20 @@ jobs:
     with:
       cwd: packages/image-search-server
 
-  # blocker for commented: https://github.com/oven-sh/bun/issues/6567
   deploy:
     name: Deploy server
     runs-on: ubuntu-latest
     needs: check-package
     environment: production
-    defaults:
-      run:
-        working-directory: packages/image-search-server
     steps:
-      # - name: Checkout repo
-      #   uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Checkout repo
+        uses: actions/checkout@cbb722410c2e876e24abbe8de2cc27693e501dcb
+
+      - name: Build image
+        run: docker build --pull --rm -f 'Dockerfile' -t image-search-server:latest '.' && docker save -o image-search-server.tar image-search-server:latest
+
+      - name: Package image
+        run: gzip image-search-server.tar
 
       - name: Setup SSH
         run: |
@@ -54,44 +56,24 @@ jobs:
           echo '${{ secrets.SSH_KEY }}' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           echo 'StrictHostKeyChecking no' >> ~/.ssh/config
-        working-directory: .
 
-      # - name: Setup Bun
-      #   uses: oven-sh/setup-bun@f4d14e03ff726c06358e5557344e1da148b56cf7
+      - name: Deploy image
+        run: scp image-search-server.tar.gz docker-compose.yml ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/tmp/
 
-      # - name: Install dependencies
-      #   run: bun install --frozen-lockfile --production
-
-      # - name: Build
-      #   run: bun run build
-
-      # - name: Deploy
-      #   run: |
-      #     scp dist/image-search-server '${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:~/image-search-server/image-search-server_new'
-      #     ssh '${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}' /bin/bash << EOF
-      #       pkill -f image-search-server || true
-      #       cd ~/image-search-server
-      #       mv image-search-server_new image-search-server
-      #       nohup ./image-search-server > /dev/null 2>&1 &
-      #     EOF
-
-      # temporary solution
-      - name: Deploy
+      - name: Run container
         uses: appleboy/ssh-action@66aa4d343bf909ac4fa0ac52f4e62a9adc354c95
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd
-            repository_name="$(basename '${{ github.repository }}')"
-            if [[ ! -d "$repository_name" ]]; then
-              git clone '${{ github.server_url }}/${{ github.repository }}'
+            if [[ ! -d "/image-search-server" ]]; then
+              echo "Create the /image-search-server folder with the .env file in it first.\nIt is also recommended to run 'chown -R root:docker /image-search-server && chmod -R 770 /image-search-server' for security reasons" >&2
+              exit 1
             fi
-            cd "$repository_name"
-            pkill -f 'bun run start$'
-            git fetch --all
-            git reset --hard origin/master
-            cd packages/image-search-server
-            bun install --frozen-lockfile --production
-            nohup bun run start > /dev/null 2>&1 &
+            cd /image-search-server
+            docker-compose down
+            docker rmi image-search-server:latest
+            mv -f /tmp/image-search-server.tar.gz /tmp/docker-compose.yml ./
+            docker load -i image-search-server.tar.gz
+            docker-compose up -d
