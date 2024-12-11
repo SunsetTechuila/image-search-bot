@@ -4,6 +4,7 @@
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "oven.bun-vscode",
-    "github.vscode-github-actions"
+    "github.vscode-github-actions",
+    "ms-azuretools.vscode-docker"
   ]
 }

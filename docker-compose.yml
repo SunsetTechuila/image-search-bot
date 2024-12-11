@@ -1,0 +1,9 @@
+services:
+  server:
+    container_name: image-search-server
+    build:
+      context: .
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./http-server:/http-server

@@ -1,0 +1,9 @@
+node_modules/
+.gitignore
+*.md
+LICENSE
+.env*
+.editorconfig
+eslint.config.*
+tsconfig*
+.prettier*
