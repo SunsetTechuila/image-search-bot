@@ -1,0 +1,25 @@
+.cache
+.github
+.husky
+.vscode
+node_modules
+commitlintrc.json
+.dockerignore
+.editorconfig
+.gitattributes
+.npmrc
+Dockerfile*
+docker-compose*
+LICENSE
+
+**/eslint.config.*
+**/.prettier*
+**/.gitignore
+**/*.md
+**/.env*
+
+# mtcute
+client.session*
+
+packages/image-search-bot
+!packages/image-search-bot/package.json

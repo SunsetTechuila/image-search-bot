@@ -1,0 +1,15 @@
+services:
+  server:
+    image: image-search-server:latest
+    container_name: image-search-server
+    restart: unless-stopped
+    tty: true
+    env_file: .env
+    volumes:
+      - ./tls_key:/keys/tls_key:ro
+      - ./tls_cert:/keys/tls_cert:ro
+    environment:
+      - TLS_KEY_PATH=/keys/tls_key
+      - TLS_CERT_PATH=/keys/tls_cert
+    ports:
+      - 443:3000
