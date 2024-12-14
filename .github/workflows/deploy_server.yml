@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - docker
     paths:
       - packages/image-search-server/src/**
       - packages/image-search-server/package.json
