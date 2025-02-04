@@ -19,7 +19,6 @@ test("does return images", async () => {
   const images = await yandexSearchAdapter.search("cats");
 
   for (const image of images) {
-    expect(image).toHaveProperty("alt");
     expect(image).toHaveProperty("url");
     expect(image).toHaveProperty("width");
     expect(image).toHaveProperty("height");

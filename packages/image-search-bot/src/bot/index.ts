@@ -1,4 +1,4 @@
-import type { Image } from "shared/types";
+import type { SearchResult } from "shared/types";
 import {
   Bot,
   webhookCallback,
@@ -85,10 +85,10 @@ export default class ImageSearchBot {
       throw new Error(`Failed to fetch images: ${result.statusText}`);
     }
 
-    const images: Image[] = await result.json();
+    const results: SearchResult[] = await result.json();
 
     await context.answerInlineQuery(
-      images.map((image, index) => InlineQueryResultBuilder.photo(`image-${index}`, image.url)),
+      results.map((result, index) => InlineQueryResultBuilder.photo(`image-${index}`, result.url)),
       {
         next_offset: (Number.parseInt(currentOffset) + 1).toString(),
         cache_time: THIRTY_MINUTES_SEC,

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { Elysia, t } from "elysia";
-import type { Image } from "shared/types";
+import type { SearchResult } from "shared/types";
 
 import { YandexSearchAdapter } from "./modules";
 
@@ -59,16 +59,16 @@ async function main() {
       async ({ query, error: returnError }) => {
         console.log("Received request. Processing...");
 
-        let images: Image[];
+        let results: SearchResult[];
         try {
-          images = await yandexSearchAdapter.search(query.query, query.page);
+          results = await yandexSearchAdapter.search(query.query, query.page);
         } catch (error) {
           console.error("Error occurred while processing request:", error);
           return returnError(500);
         }
 
         console.log("Request processed. Sending response...");
-        return images;
+        return results;
       },
       {
         query: t.Object({

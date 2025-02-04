@@ -1,3 +1,3 @@
 import "@total-typescript/ts-reset";
 
-export type { Image } from "./image";
+export type { SearchResult } from "./searchResult";

@@ -1,7 +1,7 @@
-import type { Image } from "shared/types";
+import type { SearchResult } from "shared/types";
 import { z } from "zod";
 
-export default function parseSearchResult(searchResult: string): Image[] {
+export default function transformSearchResult(searchResult: string): SearchResult[] {
   const { blocks } = SearchResultSchema.parse(JSON.parse(searchResult));
 
   return blocks.flatMap((block) => {
@@ -10,18 +10,40 @@ export default function parseSearchResult(searchResult: string): Image[] {
   });
 }
 
+const ImageSchema = z
+  .object({
+    url: z.string(),
+    fileSizeInBytes: z.number(),
+    w: z.number(),
+    h: z.number(),
+  })
+  .transform((item) => ({
+    url: item.url,
+    sizeInBytes: item.fileSizeInBytes,
+    width: item.w,
+    height: item.h,
+  }));
+
+const ViewerDataSchema = z.object({
+  preview: z.array(ImageSchema),
+  dups: z.array(ImageSchema),
+});
+
 const EntitySchema = z
   .object({
     alt: z.string(),
     origWidth: z.number(),
     origHeight: z.number(),
     origUrl: z.string(),
+    viewerData: ViewerDataSchema,
   })
   .transform((entity) => ({
-    alt: entity.alt,
+    caption: entity.alt,
+    url: entity.origUrl,
     width: entity.origWidth,
     height: entity.origHeight,
-    url: entity.origUrl,
+    sizeInBytes: entity.viewerData.preview.find((item) => item.url === entity.origUrl)?.sizeInBytes,
+    duplicates: entity.viewerData.dups,
   }));
 
 const BlockSchema = z.object({

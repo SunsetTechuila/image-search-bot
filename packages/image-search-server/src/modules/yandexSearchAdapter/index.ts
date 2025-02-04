@@ -1,7 +1,7 @@
-import type { Image } from "shared/types";
+import type { SearchResult } from "shared/types";
 
 import type { SearchAdapter } from "@types";
-import { TelegramFetcher, createSearchUrl, parseSearchResult } from "./modules";
+import { TelegramFetcher, createSearchUrl, transformSearchResult } from "./modules";
 
 export interface YandexSearchAdapterOptions {
   telegramApiId: number;
@@ -16,12 +16,12 @@ export default class YandexSearchAdapter implements SearchAdapter {
     this.#telegramFetcher = telegramFetcher;
   }
 
-  public async search(query: string, page?: number): Promise<Image[]> {
+  public async search(query: string, page?: number): Promise<SearchResult[]> {
     const searchUrl = createSearchUrl(query, page);
     const searchResult = await this.#telegramFetcher.fetchFile(searchUrl);
-    const images = parseSearchResult(searchResult.toString());
+    const results = transformSearchResult(searchResult.toString());
 
-    return images;
+    return results;
   }
 
   public static async create(options: YandexSearchAdapterOptions): Promise<YandexSearchAdapter> {
