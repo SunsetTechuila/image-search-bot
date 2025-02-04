@@ -4,7 +4,7 @@ export default function createSearchUrl(searchQuery: string, page = 0): string {
   const queryParameters = {
     format: "json",
     request: requestBlock,
-    text: searchQuery.replaceAll(" ", "+"),
+    text: searchQuery,
     p: page,
   };
 
