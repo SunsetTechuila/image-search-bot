@@ -2,5 +2,9 @@
   "[typescript][json][yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "npm.packageManager": "bun"
+  "npm.packageManager": "bun",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "search.exclude": {
+    "packages/image-search-bot/src/types/wrangler/runtime.d.ts": true
+  }
 }
