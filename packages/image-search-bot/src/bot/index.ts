@@ -23,6 +23,10 @@ type InlineQueryContext = FilteredContext<"inline_query">;
 
 const THIRTY_MINUTES_SEC = 60 * 30;
 
+const ALLOWED_EXTENSIONS = ["jpg", "jpeg", "png"];
+
+const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024;
+
 export default class ImageSearchBot {
   readonly #allowedUserIds;
 
@@ -88,11 +92,40 @@ export default class ImageSearchBot {
     const results: SearchResult[] = await result.json();
 
     await context.answerInlineQuery(
-      results.map((result, index) => InlineQueryResultBuilder.photo(`image-${index}`, result.url)),
+      ImageSearchBot.#filterSearchResults(results).map((url, index) =>
+        InlineQueryResultBuilder.photo(`image-${index}`, url),
+      ),
       {
         next_offset: (Number.parseInt(currentOffset) + 1).toString(),
         cache_time: THIRTY_MINUTES_SEC,
       },
+    );
+  }
+
+  static #filterSearchResults(results: SearchResult[]): string[] {
+    const filteredUrls: string[] = [];
+
+    for (const result of results) {
+      if (ImageSearchBot.#isValidImage(result.url, result.sizeInBytes ?? 0)) {
+        filteredUrls.push(result.url);
+        continue;
+      }
+
+      for (const duplicate of result.duplicates) {
+        if (ImageSearchBot.#isValidImage(duplicate.url, duplicate.sizeInBytes)) {
+          filteredUrls.push(duplicate.url);
+          break;
+        }
+      }
+    }
+
+    return filteredUrls;
+  }
+
+  static #isValidImage(url: string, sizeInBytes: number): boolean {
+    return (
+      ALLOWED_EXTENSIONS.some((extension) => url.endsWith(extension)) &&
+      sizeInBytes < MAX_FILE_SIZE_BYTES
     );
   }
 }
