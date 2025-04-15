@@ -13,7 +13,7 @@ export default typescriptEslint.config({
     typescriptEslint.configs.recommendedTypeChecked,
     typescriptEslint.configs.stylisticTypeChecked,
     pluginSonarJs.configs.recommended,
-    pluginUnicorn.configs["flat/recommended"],
+    pluginUnicorn.configs.recommended,
     pluginImportX.flatConfigs.recommended,
     pluginImportX.flatConfigs.typescript,
     configPrettier,

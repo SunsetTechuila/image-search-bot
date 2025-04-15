@@ -4,5 +4,5 @@
     "tsBuildInfoFile": "../../.cache/typescript/image-search-bot.tsbuildinfo"
   },
   "include": ["src/**/*"],
-  "exclude": ["src/types/wrangler/*"]
+  "exclude": ["src/types/wrangler.d.ts"]
 }

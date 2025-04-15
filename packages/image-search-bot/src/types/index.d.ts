@@ -1,2 +1,1 @@
-import "./wrangler/runtime";
-import "./wrangler/worker-configuration";
+import "./wrangler.d.ts";

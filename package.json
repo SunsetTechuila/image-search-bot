@@ -20,9 +20,9 @@
     "prepare": "bun --bun husky || true"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.6.0",
-    "@commitlint/config-conventional": "^19.6.0",
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
     "husky": "^9.1.7",
-    "prettier": "^3.4.1"
+    "prettier": "^3.5.3"
   }
 }

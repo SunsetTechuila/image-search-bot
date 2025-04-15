@@ -1,2 +1,2 @@
 .wrangler/
-src/types/wrangler/
+src/types/wrangler.d.ts

@@ -3,8 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "wrangler dev --experimental-json-config",
-    "deploy": "wrangler deploy --experimental-json-config",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
     "check-all": "bun --bun concurrently --kill-others=failure 'bun test' 'bun lint' 'bun check-types' 'bun format:check'",
     "check-types": "bun --bun tsc",
     "format": "bun format:base --write",
@@ -12,25 +12,25 @@
     "format:base": "bun --bun prettier . --cache --cache-location='../../.cache/prettier/cache'",
     "lint": "bun --bun eslint . --cache --cache-location='../../.cache/eslint/'",
     "test": "bun test",
-    "update-workers-types": "wrangler types './src/types/wrangler/worker-configuration.d.ts' --env-interface='Environment' --x-include-runtime='./src/types/wrangler/runtime.d.ts' --experimental-json-config"
+    "update-workers-types": "wrangler types './src/types/wrangler.d.ts' --env-interface='Environment'"
   },
   "dependencies": {
-    "grammy": "1.32.0",
+    "grammy": "1.36.0",
     "shared": "workspace:*",
-    "wrangler": "^3.91.0"
+    "wrangler": "^4.11.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.16.0",
-    "@types/bun": "^1.1.14",
-    "concurrently": "^9.1.0",
-    "eslint": "^9.16.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-import-resolver-typescript": "^3.6.3",
-    "eslint-plugin-import-x": "^4.5.0",
-    "eslint-plugin-sonarjs": "^3.0.0",
-    "eslint-plugin-unicorn": "^56.0.1",
-    "prettier": "^3.4.1",
-    "typescript": "^5.7.2",
-    "typescript-eslint": "^8.17.0"
+    "@eslint/js": "^9.24.0",
+    "@types/bun": "^1.2.9",
+    "concurrently": "^9.1.2",
+    "eslint": "^9.24.0",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-import-resolver-typescript": "^4.3.2",
+    "eslint-plugin-import-x": "^4.10.5",
+    "eslint-plugin-sonarjs": "^3.0.2",
+    "eslint-plugin-unicorn": "^58.0.0",
+    "prettier": "^3.5.3",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.30.1"
   }
 }
