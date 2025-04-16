@@ -90,11 +90,12 @@ export default class ImageSearchBot {
     }
 
     const results: SearchResult[] = await result.json();
+    console.log(`Recieved ${results.length} results`);
+    const filteredUrls = ImageSearchBot.#filterSearchResults(results);
+    console.log(`Got ${filteredUrls.length} filtered results`);
 
     await context.answerInlineQuery(
-      ImageSearchBot.#filterSearchResults(results).map((url, index) =>
-        InlineQueryResultBuilder.photo(`image-${index}`, url),
-      ),
+      filteredUrls.map((url, index) => InlineQueryResultBuilder.photo(`image-${index}`, url)),
       {
         next_offset: (Number.parseInt(currentOffset) + 1).toString(),
         cache_time: THIRTY_MINUTES_SEC,

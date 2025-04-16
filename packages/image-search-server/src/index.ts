@@ -67,6 +67,7 @@ async function main() {
           return returnError(500);
         }
 
+        console.log(`Got ${results.length} results`);
         console.log("Request processed. Sending response...");
         return results;
       },
