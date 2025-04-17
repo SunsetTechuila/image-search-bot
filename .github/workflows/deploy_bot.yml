@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - dev
     paths:
       - packages/image-search-bot/src/**
       - packages/image-search-bot/package.json
@@ -13,7 +14,7 @@ jobs:
   check-token:
     name: Check for Cloudflare API token
     runs-on: ubuntu-latest
-    environment: production
+    environment: ${{ github.ref_name == 'master' && 'production' || 'development' }}
     outputs:
       is_set: ${{ steps.check.outputs.is_set }}
     steps:
@@ -37,9 +38,10 @@ jobs:
       cwd: packages/image-search-bot
 
   deploy:
+    name: Deploy bot
     runs-on: ubuntu-24.04-arm
     needs: check-package
-    environment: production
+    environment: ${{ github.ref_name == 'master' && 'production' || 'development' }}
     defaults:
       run:
         working-directory: packages/image-search-bot

@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-      - docker
+      - dev
     paths:
       - packages/image-search-server/src/**
       - packages/image-search-server/package.json
@@ -15,7 +15,7 @@ jobs:
   check-credentials:
     name: Check for SSH credentials
     runs-on: ubuntu-latest
-    environment: production
+    environment: ${{ github.ref_name == 'master' && 'production' || 'development' }}
     outputs:
       is_set: ${{ steps.check.outputs.is_set }}
     steps:
@@ -38,25 +38,21 @@ jobs:
     with:
       cwd: packages/image-search-server
 
+  build_server:
+    name: Build server
+    needs: check-package
+    uses: ./.github/workflows/build_server.yml
+
   deploy:
     name: Deploy server
+    needs: build_server
+    environment: ${{ github.ref_name == 'master' && 'production' || 'development' }}
     runs-on: ubuntu-24.04-arm
-    needs: check-package
-    environment: production
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@941183f0a080fa6be59a9e3d3f4108c19a528204
-
-      - name: Build image
-        run: |
-          docker build --platform linux/arm64 --pull --rm -f 'Dockerfile' -t image-search-server:latest '.'
-          docker save -o image-search-server.tar image-search-server:latest
-
-      - name: Compress image
-        run: gzip image-search-server.tar
+      - name: Download image
+        uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e
+        with:
+          name: ${{ needs.build_server.outputs.artifact_name }}
 
       - name: Setup SSH
         run: |
@@ -66,7 +62,7 @@ jobs:
           echo 'StrictHostKeyChecking no' >> ~/.ssh/config
 
       - name: Deploy image
-        run: scp image-search-server.tar.gz docker-compose.yml ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/tmp/
+        run: scp image-search-server.tar docker-compose.yml ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/tmp/
 
       - name: Run container
         uses: appleboy/ssh-action@0e19dd962da42eb2f2b775d6e133dc9dfd424aa6

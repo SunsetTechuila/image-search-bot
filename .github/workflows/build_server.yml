@@ -1,0 +1,37 @@
+name: Build Server
+
+on:
+  workflow_call:
+    outputs:
+      artifact_name:
+        description: The name of the created artifact
+        value: ${{ jobs.build.outputs.artifact_name }}
+jobs:
+  build:
+    name: Build server
+    environment: ${{ github.ref_name == 'master' && 'production' || 'development' }}
+    runs-on: ubuntu-24.04-arm
+    env:
+      artifact_name: image-search-server-${{ github.sha }}
+    outputs:
+      artifact_name: ${{ env.artifact_name }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@941183f0a080fa6be59a9e3d3f4108c19a528204
+
+      - name: Build image
+        run: |
+          mkdir -p output
+          cp docker-compose.yml output/
+          docker build --platform linux/${{ vars.SERVER_ARCHITECTURE }} --pull --rm -f 'Dockerfile' -t image-search-server:latest '.'
+          docker save -o output/image-search-server.tar image-search-server:latest
+
+      - name: Upload image
+        id: upload
+        uses: actions/upload-artifact@6027e3dd177782cd8ab9af838c04fd81a07f1d47
+        with:
+          name: ${{ env.artifact_name }}
+          path: output/

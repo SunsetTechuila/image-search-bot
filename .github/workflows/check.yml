@@ -5,6 +5,7 @@ on:
   workflow_call:
     inputs:
       cwd:
+        description: Current working directory for the package to check.
         type: string
         default: "."
 
