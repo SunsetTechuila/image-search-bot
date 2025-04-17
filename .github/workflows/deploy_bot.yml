@@ -37,7 +37,7 @@ jobs:
       cwd: packages/image-search-bot
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     needs: check-package
     environment: production
     defaults:

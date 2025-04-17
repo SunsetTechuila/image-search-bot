@@ -18,7 +18,7 @@ jobs:
 
   check_format:
     name: Check formatting
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     defaults:
       run:
         working-directory: ${{ inputs.cwd }}
@@ -44,7 +44,7 @@ jobs:
 
   check_types:
     name: Check types
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     defaults:
       run:
         working-directory: ${{ inputs.cwd }}
@@ -70,7 +70,7 @@ jobs:
 
   lint:
     name: Lint code
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     defaults:
       run:
         working-directory: ${{ inputs.cwd }}
@@ -96,7 +96,7 @@ jobs:
 
   test:
     name: Test code
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     needs: authorize
     environment: testing
     defaults:
