@@ -9,7 +9,7 @@
         "prettier": "^3.5.3",
       },
     },
-    "packages/image-search-bot": {
+    "packages/bot": {
       "name": "image-search-bot",
       "dependencies": {
         "grammy": "1.36.0",
@@ -635,7 +635,7 @@
 
     "ignore": ["ignore@5.3.2", "", {}, "sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g=="],
 
-    "image-search-bot": ["image-search-bot@workspace:packages/image-search-bot"],
+    "image-search-bot": ["image-search-bot@workspace:packages/bot"],
 
     "image-search-server": ["image-search-server@workspace:packages/image-search-server"],
 

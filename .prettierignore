@@ -3,5 +3,5 @@ node_modules/
 bun.lock
 
 # sadly, prettier picks up only .prettierignore in the cwd
-packages/image-search-bot/src/types/wrangler.d.ts
-packages/image-search-bot/.wrangler/
+packages/bot/src/types/wrangler.d.ts
+packages/bot/.wrangler/
