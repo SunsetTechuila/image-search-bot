@@ -6,8 +6,8 @@ on:
       - master
       - dev
     paths:
-      - packages/image-search-server/src/**
-      - packages/image-search-server/package.json
+      - packages/server/src/**
+      - packages/server/package.json
       - Dockerfile
       - docker-compose.yml
       - .github/workflows/deploy_server.yml
@@ -38,7 +38,7 @@ jobs:
     uses: ./.github/workflows/check.yml
     secrets: inherit
     with:
-      cwd: packages/image-search-server
+      cwd: packages/server
 
   build_server:
     name: Build server
