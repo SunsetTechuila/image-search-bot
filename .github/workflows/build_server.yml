@@ -12,7 +12,7 @@ jobs:
     environment: ${{ github.ref_name == 'master' && 'production' || 'development' }}
     runs-on: ubuntu-24.04-arm
     env:
-      artifact_name: image-search-server-${{ github.sha }}
+      artifact_name: image-search-server-${{ vars.SERVER_ARCHITECTURE }}-${{ github.sha }}
     outputs:
       artifact_name: ${{ env.artifact_name }}
     steps:
