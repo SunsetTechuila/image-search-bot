@@ -1,6 +1,6 @@
 import { test, expect } from "bun:test";
 
-import YandexSearchAdapter from ".";
+import { YandexSearchAdapter } from ".";
 
 const {
   TELEGRAM_API_ID: telegramApiId,

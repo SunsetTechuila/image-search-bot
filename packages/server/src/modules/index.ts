@@ -1,1 +1,1 @@
-export { default as YandexSearchAdapter } from "./yandexSearchAdapter";
+export { YandexSearchAdapter } from "./yandexSearchAdapter";

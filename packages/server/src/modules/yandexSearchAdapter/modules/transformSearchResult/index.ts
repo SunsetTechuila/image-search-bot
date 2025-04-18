@@ -1,7 +1,7 @@
 import type { SearchResult } from "shared/types";
 import { z } from "zod";
 
-export default function transformSearchResult(searchResult: string): SearchResult[] {
+export function transformSearchResult(searchResult: string): SearchResult[] {
   const { blocks } = SearchResultSchema.parse(JSON.parse(searchResult));
 
   return blocks.flatMap((block) => {

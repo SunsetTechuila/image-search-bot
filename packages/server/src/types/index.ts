@@ -1,1 +1,1 @@
-export type { default as SearchAdapter } from "./searchAdapter";
+export type { SearchAdapter } from "./searchAdapter";

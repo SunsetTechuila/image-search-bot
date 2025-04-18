@@ -1,5 +1,5 @@
 import type { SearchResult } from "shared/types";
 
-export default interface SearchAdapter {
+export interface SearchAdapter {
   search(query: string, page?: number): Promise<SearchResult[]>;
 }

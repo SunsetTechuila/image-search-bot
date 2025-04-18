@@ -9,7 +9,7 @@ export interface YandexSearchAdapterOptions {
   telegramUserSession?: string;
 }
 
-export default class YandexSearchAdapter implements SearchAdapter {
+export class YandexSearchAdapter implements SearchAdapter {
   readonly #telegramFetcher: TelegramFetcher;
 
   private constructor(telegramFetcher: TelegramFetcher) {
