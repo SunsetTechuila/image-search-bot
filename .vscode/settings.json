@@ -2,5 +2,7 @@
   "[typescript][json][yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "npm.packageManager": "bun"
+  "npm.packageManager": "bun",
+  "typescript.tsc.autoDetect": "off",
+  "typescript.tsdk": "./node_modules/typescript/lib",
 }

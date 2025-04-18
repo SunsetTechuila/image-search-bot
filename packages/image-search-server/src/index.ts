@@ -2,7 +2,7 @@ import { z } from "zod";
 import { Elysia, t } from "elysia";
 import type { Image } from "shared/types";
 
-import { YandexSearchAdapter } from "./modules";
+import { YandexSearchAdapter, passwordChecker } from "./modules";
 
 async function main() {
   const EnvironmentVariablesSchema = z.object({
@@ -40,20 +40,7 @@ async function main() {
       },
     },
   })
-    .guard({
-      beforeHandle({ error, headers }) {
-        if (process.env.NODE_ENV === "development") {
-          console.log("[GUARD] Skipping password check in development mode");
-          return;
-        }
-
-        console.log("[GUARD] Checking password...");
-        if (headers.password !== SEARCH_SERVER_PASSWORD) {
-          console.log("[GUARD] Password check failed. Sending error...");
-          return error(401);
-        }
-      },
-    })
+    .use(passwordChecker(SEARCH_SERVER_PASSWORD))
     .get(
       "/yandex",
       async ({ query, error: returnError }) => {

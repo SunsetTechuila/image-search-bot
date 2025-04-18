@@ -1,0 +1,1 @@
+export { default as YandexSearchAdapter, type YandexSearchAdapterOptions } from "./yandexSearchAdapter";

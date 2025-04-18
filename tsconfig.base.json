@@ -8,7 +8,6 @@
     "noEmit": true,
     "esModuleInterop": true,
     "verbatimModuleSyntax": true,
-    "isolatedDeclarations": true,
     "composite": true,
 
     "skipLibCheck": true,

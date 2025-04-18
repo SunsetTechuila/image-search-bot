@@ -1,6 +1,5 @@
 import type { Image } from "shared/types";
 
-import type { SearchAdapter } from "@types";
 import { TelegramFetcher, createSearchUrl, parseSearchResult } from "./modules";
 
 export interface YandexSearchAdapterOptions {
