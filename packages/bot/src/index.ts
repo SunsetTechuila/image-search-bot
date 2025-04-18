@@ -1,4 +1,4 @@
-import ImageSearchBot from "./bot";
+import { ImageSearchBot } from "./bot";
 
 export default {
   async fetch(request: Request, environment: Environment): Promise<Response> {

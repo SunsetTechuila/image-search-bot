@@ -1,6 +1,6 @@
 import { expect, test } from "bun:test";
 
-import TelegramFetcher from ".";
+import { TelegramFetcher } from ".";
 
 const {
   TELEGRAM_API_ID: apiId,

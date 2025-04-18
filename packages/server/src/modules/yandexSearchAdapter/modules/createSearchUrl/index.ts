@@ -1,6 +1,6 @@
 const baseUrl = "https://yandex.com/images/search";
 
-export default function createSearchUrl(searchQuery: string, page = 0): string {
+export function createSearchUrl(searchQuery: string, page = 0): string {
   const queryParameters = {
     format: "json",
     request: requestBlock,

@@ -2,7 +2,7 @@
 
 import { test, expect } from "bun:test";
 
-import transformSearchResult from ".";
+import { transformSearchResult } from ".";
 import searchResult from "./searchResult.json";
 
 test("can extract images info", () => {

@@ -7,7 +7,7 @@ export interface TelegramFetcherOptions {
   userSession?: string;
 }
 
-export default class TelegramFetcher {
+export class TelegramFetcher {
   readonly #telegramClient;
 
   private constructor(telegramClient: TelegramClient) {

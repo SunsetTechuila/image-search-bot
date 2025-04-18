@@ -1,6 +1,6 @@
 import { test, expect } from "bun:test";
 
-import createSearchUrl from ".";
+import { createSearchUrl } from ".";
 
 test("can create search url", () => {
   const result = createSearchUrl("random search query");

@@ -27,7 +27,7 @@ const ALLOWED_EXTENSIONS = ["jpg", "jpeg", "png"];
 
 const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024;
 
-export default class ImageSearchBot {
+export class ImageSearchBot {
   readonly #allowedUserIds;
 
   readonly #webhookCallback;
