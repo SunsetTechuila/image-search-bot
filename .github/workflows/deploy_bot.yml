@@ -6,9 +6,9 @@ on:
       - master
       - dev
     paths:
-      - packages/image-search-bot/src/**
-      - packages/image-search-bot/package.json
-      - packages/image-search-bot/wrangler.json
+      - packages/bot/src/**
+      - packages/bot/package.json
+      - packages/bot/wrangler.json
       - .github/workflows/deploy_bot.yml
 
 jobs:
@@ -36,7 +36,7 @@ jobs:
     uses: ./.github/workflows/check.yml
     secrets: inherit
     with:
-      cwd: packages/image-search-bot
+      cwd: packages/bot
 
   deploy:
     name: Deploy bot
@@ -45,7 +45,7 @@ jobs:
     environment: ${{ github.ref_name == 'master' && 'production' || 'development' }}
     defaults:
       run:
-        working-directory: packages/image-search-bot
+        working-directory: packages/bot
     steps:
       - name: Checkout repo
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683

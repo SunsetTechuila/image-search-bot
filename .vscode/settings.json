@@ -5,6 +5,6 @@
   "npm.packageManager": "bun",
   "typescript.tsdk": "node_modules/typescript/lib",
   "search.exclude": {
-    "packages/image-search-bot/src/types/wrangler.d.ts": true
+    "packages/bot/src/types/wrangler.d.ts": true
   }
 }
