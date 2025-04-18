@@ -77,8 +77,8 @@ jobs:
               exit 1
             fi
             cd image-search-server
-            mv -f /tmp/image-search-server.tar.gz /tmp/docker-compose.yml ./
+            mv -f /tmp/image-search-server.tar /tmp/docker-compose.yml ./
             docker compose down
             docker rmi image-search-server:latest
-            docker load -i image-search-server.tar.gz
+            docker load -i image-search-server.tar
             docker compose up -d
