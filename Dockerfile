@@ -12,7 +12,7 @@ WORKDIR /usr/src/app
 COPY --from=install /temp/node_modules node_modules
 COPY . .
 
-RUN chown -R bun:bun /usr/src/app
+RUN chown -R bun:bun /usr/src/app/packages/image-search-server
 
 USER bun
 EXPOSE 3000/tcp
