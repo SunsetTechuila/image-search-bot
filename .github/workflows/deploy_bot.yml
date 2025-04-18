@@ -9,6 +9,7 @@ on:
       - packages/image-search-bot/src/**
       - packages/image-search-bot/package.json
       - packages/image-search-bot/wrangler.json
+      - .github/workflows/deploy_bot.yml
 
 jobs:
   check-token:

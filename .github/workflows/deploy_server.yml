@@ -10,6 +10,8 @@ on:
       - packages/image-search-server/package.json
       - Dockerfile
       - docker-compose.yml
+      - .github/workflows/deploy_server.yml
+      - .github/workflows/build_server.yml
 
 jobs:
   check-credentials:
