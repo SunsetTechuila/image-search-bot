@@ -1,5 +1,5 @@
-import type { SearchResult } from "shared/types";
 import { z } from "zod";
+import type { SearchResult } from "@types";
 
 export function transformSearchResult(searchResult: string): SearchResult[] {
   const { blocks } = SearchResultSchema.parse(JSON.parse(searchResult));

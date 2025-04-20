@@ -22,6 +22,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@elysiajs/eden": "^1.2.0",
     "@eslint/js": "^9.24.0",
     "@types/bun": "^1.2.9",
     "concurrently": "^9.1.2",

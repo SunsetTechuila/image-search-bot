@@ -1,87 +1,62 @@
 import { z } from "zod";
-import { Elysia, t } from "elysia";
-import type { SearchResult } from "shared/types";
+import { Elysia } from "elysia";
 
-import { YandexSearchAdapter } from "./modules";
+import { YandexSearchProvider, PasswordChecker, Logger } from "./modules";
 
-async function main() {
-  const EnvironmentVariablesSchema = z.object({
-    TELEGRAM_API_ID: z.coerce.number(),
-    TELEGRAM_API_HASH: z.string(),
-    TELEGRAM_USER_SESSION: z.string().optional(),
-    SEARCH_SERVER_PASSWORD: z.string(),
-    TLS_CERT_PATH: z.string().optional(),
-    TLS_KEY_PATH: z.string().optional(),
-  });
-
-  console.log("Checking environment variables...");
-  const {
-    TELEGRAM_API_ID,
-    TELEGRAM_API_HASH,
-    TELEGRAM_USER_SESSION,
-    SEARCH_SERVER_PASSWORD,
-    TLS_CERT_PATH,
-    TLS_KEY_PATH,
-  } = EnvironmentVariablesSchema.parse(process.env);
-
-  console.log("Creating Yandex search adapter...");
-  const yandexSearchAdapter = await YandexSearchAdapter.create({
-    telegramApiId: TELEGRAM_API_ID,
-    telegramApiHash: TELEGRAM_API_HASH,
-    telegramUserSession: TELEGRAM_USER_SESSION,
-  });
-
-  console.log("Starting server...");
-  new Elysia({
-    serve: {
-      tls: {
-        cert: TLS_CERT_PATH ? Bun.file(TLS_CERT_PATH) : undefined,
-        key: TLS_KEY_PATH ? Bun.file(TLS_KEY_PATH) : undefined,
-      },
-    },
-  })
-    .guard({
-      beforeHandle({ error, headers }) {
-        if (process.env.NODE_ENV === "development") {
-          console.log("[GUARD] Skipping password check in development mode");
-          return;
-        }
-
-        console.log("[GUARD] Checking password...");
-        if (headers.password !== SEARCH_SERVER_PASSWORD) {
-          console.log("[GUARD] Password check failed. Sending error...");
-          return error(401);
-        }
-      },
-    })
-    .get(
-      "/yandex",
-      async ({ query, error: returnError }) => {
-        console.log("Received request. Processing...");
-
-        let results: SearchResult[];
-        try {
-          results = await yandexSearchAdapter.search(query.query, query.page);
-        } catch (error) {
-          console.error("Error occurred while processing request:", error);
-          return returnError(500);
-        }
-
-        console.log(`Got ${results.length} results`);
-        console.log("Request processed. Sending response...");
-        return results;
-      },
-      {
-        query: t.Object({
-          query: t.String(),
-          page: t.Optional(t.Numeric()),
-        }),
-      },
-    )
-    .listen(process.env.PORT ?? 3000);
-}
-
-main().catch((error) => {
-  console.error("Error occurred while starting server:", error);
-  process.exit(1);
+const EnvironmentVariablesSchema = z.object({
+  TELEGRAM_API_ID: z.coerce.number(),
+  TELEGRAM_API_HASH: z.string(),
+  TELEGRAM_USER_SESSION: z.string().optional(),
+  SEARCH_SERVER_PASSWORD: z.string(),
+  TLS_CERT_PATH: z.string().optional(),
+  TLS_KEY_PATH: z.string().optional(),
 });
+const {
+  TELEGRAM_API_ID,
+  TELEGRAM_API_HASH,
+  TELEGRAM_USER_SESSION,
+  SEARCH_SERVER_PASSWORD,
+  TLS_CERT_PATH,
+  TLS_KEY_PATH,
+} = EnvironmentVariablesSchema.parse(process.env);
+
+const passwordChecker = new PasswordChecker(SEARCH_SERVER_PASSWORD, {
+  logger: new Logger(PasswordChecker.pluginName),
+});
+const mainLogger = new Logger("Server");
+
+mainLogger.info("Starting server...");
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const imageSearchServer = new Elysia({
+  serve: {
+    tls: {
+      cert: TLS_CERT_PATH ? Bun.file(TLS_CERT_PATH) : undefined,
+      key: TLS_KEY_PATH ? Bun.file(TLS_KEY_PATH) : undefined,
+    },
+  },
+})
+  .use(
+    (
+      await YandexSearchProvider.create({
+        logger: new Logger(YandexSearchProvider.name),
+        macros: [passwordChecker],
+        telegramApiId: TELEGRAM_API_ID,
+        telegramApiHash: TELEGRAM_API_HASH,
+        telegramUserSession: TELEGRAM_USER_SESSION,
+      })
+      // prettier-ignore
+      // eslint-disable-next-line unicorn/no-await-expression-member
+    ).plugin,
+  )
+  .onError((error) => {
+    console.error("Error occurred while processing request:", error);
+    return {
+      status: 500,
+      message: "Internal Server Error",
+    };
+  })
+  .listen(process.env.PORT ?? 3000);
+
+mainLogger.info("Server started successfully");
+
+export type ImageSearchServer = typeof imageSearchServer;

@@ -14,6 +14,16 @@ export class TelegramFetcher {
     this.#telegramClient = telegramClient;
   }
 
+  public static async create(options: TelegramFetcherOptions): Promise<TelegramFetcher> {
+    const { apiId, apiHash, userSession } = options;
+
+    const telegramClient = new TelegramClient({ apiId, apiHash });
+    if (userSession) await telegramClient.importSession(userSession);
+    await telegramClient.start();
+
+    return new TelegramFetcher(telegramClient);
+  }
+
   public async fetchFile(url: string, retries = 5): Promise<Buffer> {
     const remainingRetries = retries - 1;
 
@@ -45,16 +55,6 @@ export class TelegramFetcher {
     );
 
     return Buffer.from(buffer);
-  }
-
-  public static async create(options: TelegramFetcherOptions): Promise<TelegramFetcher> {
-    const { apiId, apiHash, userSession } = options;
-
-    const telegramClient = new TelegramClient({ apiId, apiHash });
-    if (userSession) await telegramClient.importSession(userSession);
-    await telegramClient.start();
-
-    return new TelegramFetcher(telegramClient);
   }
 
   static #isWebPageWithDocument(
