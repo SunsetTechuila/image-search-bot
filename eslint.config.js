@@ -50,6 +50,7 @@ export default typescriptEslint.config({
         },
       },
     ],
+    "unicorn/prefer-export-from": ["error", { ignoreUsedVariables: true }],
     "sonarjs/todo-tag": "warn",
     "import-x/no-deprecated": "error",
     "import-x/no-empty-named-blocks": "error",

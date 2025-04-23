@@ -3,5 +3,5 @@
   "compilerOptions": {
     "tsBuildInfoFile": "../../.cache/typescript/image-search-server.tsbuildinfo"
   },
-  "include": ["./src/**/*", "./scripts/**/*", "./tests/**/*"]
+  "include": ["./src/**/*", "./scripts/**/*", "./tests/**/*", "./globals/**/*"]
 }

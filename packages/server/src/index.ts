@@ -1,9 +1,9 @@
 import { z } from "zod";
 import { Elysia } from "elysia";
 
-import { YandexSearchProvider, PasswordChecker, Logger } from "./modules";
+import { YandexSearchProvider, PasswordChecker, Logger, type SearchResult } from "./modules";
 
-export type { SearchResult } from "./types";
+export type { SearchResult };
 export type ImageSearchServer = typeof imageSearchServer;
 
 const EnvironmentVariablesSchema = z.object({

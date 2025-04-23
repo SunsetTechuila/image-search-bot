@@ -1,6 +1,7 @@
 import { Elysia, t } from "elysia";
 
-import type { ILogger, Plugin, Macro, SearchResult } from "../../../types";
+import type { ILogger, Plugin, Macro } from "../../..";
+import type { SearchResult } from "..";
 import { TelegramFetcher, createSearchUrl, transformSearchResult } from "./modules";
 
 export interface YandexSearchProviderOptions {

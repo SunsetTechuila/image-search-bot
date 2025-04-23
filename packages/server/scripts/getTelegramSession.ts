@@ -26,4 +26,5 @@ await client.start({
 
 console.log("Your session string:\n", await client.exportSession());
 
+// eslint-disable-next-line unicorn/no-process-exit
 process.exit(0);

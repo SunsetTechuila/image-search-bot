@@ -3,7 +3,7 @@ import path from "node:path";
 
 import { treaty } from "@elysiajs/eden";
 
-import type { ImageSearchServer } from "../src";
+import type { ImageSearchServer } from "image-search-server";
 
 describe("Image Search Server E2E", () => {
   setDefaultTimeout(15_000);
