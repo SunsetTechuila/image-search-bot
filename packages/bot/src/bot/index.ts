@@ -1,4 +1,4 @@
-import type { SearchResult } from "shared/types";
+import type { SearchResult } from "shared/";
 import {
   Bot,
   webhookCallback,
@@ -89,7 +89,7 @@ export class ImageSearchBot {
       throw new Error(`Failed to fetch images: ${result.statusText}`);
     }
 
-    const results: SearchResult[] = await result.json();
+    const results = (await result.json()) as SearchResult[];
     console.log(`Recieved ${results.length} results`);
     const filteredUrls = ImageSearchBot.#filterSearchResults(results);
     console.log(`Got ${filteredUrls.length} filtered results`);

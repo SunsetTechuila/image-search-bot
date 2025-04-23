@@ -17,9 +17,7 @@
     "noImplicitOverride": true,
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
-
-    "typeRoots": ["node_modules/@types", "packages/shared"]
+    "noUnusedParameters": true
   },
   "exclude": ["node_modules"]
 }
