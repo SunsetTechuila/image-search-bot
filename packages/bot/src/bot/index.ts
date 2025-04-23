@@ -1,4 +1,3 @@
-import type { SearchResult } from "image-search-server";
 import {
   Bot,
   webhookCallback,
@@ -7,6 +6,9 @@ import {
   type FilterQuery,
   Context,
 } from "grammy";
+import { treaty } from "@elysiajs/eden";
+
+import { type ImageSearchServer, type SearchResult } from "image-search-server";
 
 export type FrameworkAdapter = Parameters<typeof webhookCallback>[1];
 
@@ -32,9 +34,9 @@ export class ImageSearchBot {
 
   readonly #webhookCallback;
 
-  readonly #searchServerAddress;
-
   readonly #searchServerPassword;
+
+  readonly #searchServerClient;
 
   constructor(options: ImageSearchBotOptions) {
     const {
@@ -50,8 +52,8 @@ export class ImageSearchBot {
     this.#webhookCallback = webhookCallback(botClient, frameworkAdapter);
 
     this.#allowedUserIds = allowedUserIds;
-    this.#searchServerAddress = searchServerAddress;
     this.#searchServerPassword = searchServerPassword;
+    this.#searchServerClient = treaty<ImageSearchServer>(searchServerAddress);
   }
 
   public async processRequest(request: Request): Promise<Response> {
@@ -77,21 +79,23 @@ export class ImageSearchBot {
 
     if (!this.#allowedUserIds.includes(id)) return;
 
-    const result = await fetch(
-      `${this.#searchServerAddress}/yandex?query=${encodeURIComponent(query)}&page=${currentOffset}`,
-      {
-        headers: {
-          password: this.#searchServerPassword,
-        },
-      },
-    );
-    if (!result.ok) {
-      throw new Error(`Failed to fetch images: ${result.statusText}`);
+    const result = await this.#searchServerClient.yandex.get({
+      headers: { password: this.#searchServerPassword },
+      query: { query: encodeURIComponent(query), page: Number.parseInt(currentOffset) },
+    });
+    if (!result.response.ok) {
+      throw new Error(`Failed to fetch images: ${result.response.statusText}`);
     }
 
-    const results = (await result.json()) as SearchResult[];
-    console.log(`Recieved ${results.length} results`);
-    const filteredUrls = ImageSearchBot.#filterSearchResults(results);
+    const { data: searchResults } = result;
+    if (!searchResults || searchResults.length === 0) {
+      throw new Error("No search results found");
+    }
+
+    console.log(`Recieved ${searchResults.length} results`);
+    // wtf is this?
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    const filteredUrls = ImageSearchBot.#filterSearchResults(searchResults);
     console.log(`Got ${filteredUrls.length} filtered results`);
 
     await context.answerInlineQuery(
