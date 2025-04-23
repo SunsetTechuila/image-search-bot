@@ -81,7 +81,7 @@ export class ImageSearchBot {
 
     const result = await this.#searchServerClient.yandex.get({
       headers: { password: this.#searchServerPassword },
-      query: { query: encodeURIComponent(query), page: Number.parseInt(currentOffset) },
+      query: { query, page: Number.parseInt(currentOffset) },
     });
     if (!result.response.ok) {
       throw new Error(`Failed to fetch images: ${result.response.statusText}`);
