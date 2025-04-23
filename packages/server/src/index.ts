@@ -3,6 +3,9 @@ import { Elysia } from "elysia";
 
 import { YandexSearchProvider, PasswordChecker, Logger } from "./modules";
 
+export type { SearchResult } from "./types";
+export type ImageSearchServer = typeof imageSearchServer;
+
 const EnvironmentVariablesSchema = z.object({
   TELEGRAM_API_ID: z.coerce.number(),
   TELEGRAM_API_HASH: z.string(),
@@ -58,5 +61,3 @@ const imageSearchServer = new Elysia({
   .listen(process.env.PORT ?? 3000);
 
 mainLogger.info("Server started successfully");
-
-export type ImageSearchServer = typeof imageSearchServer;

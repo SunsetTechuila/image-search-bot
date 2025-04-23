@@ -2,6 +2,7 @@
   "name": "image-search-server",
   "private": true,
   "type": "module",
+  "exports": "./src/index.ts",
   "scripts": {
     "dev": "bun exec 'NODE_ENV='development' bun --hot src/index.ts'",
     "start": "bun --bytecode src/index.ts",
@@ -18,7 +19,6 @@
   "dependencies": {
     "@mtcute/bun": "^0.22.3",
     "elysia": "^1.2.25",
-    "shared": "workspace:*",
     "zod": "^3.24.2"
   },
   "devDependencies": {

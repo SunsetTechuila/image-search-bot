@@ -1,4 +1,4 @@
-import type { SearchResult } from "shared/";
+import type { SearchResult } from "image-search-server";
 import {
   Bot,
   webhookCallback,

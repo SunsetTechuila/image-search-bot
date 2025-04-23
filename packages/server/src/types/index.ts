@@ -1,4 +1,4 @@
-export type { SearchResult } from "shared";
+export type { SearchResult } from "./searchResult";
 
 export type { ILogger } from "./logger";
 
