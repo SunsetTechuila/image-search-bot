@@ -93,8 +93,6 @@ export class ImageSearchBot {
     }
 
     console.log(`Recieved ${searchResults.length} results`);
-    // wtf is this?
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const filteredUrls = ImageSearchBot.#filterSearchResults(searchResults);
     console.log(`Got ${filteredUrls.length} filtered results`);
 

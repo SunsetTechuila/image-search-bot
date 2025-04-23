@@ -1,9 +1,6 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "paths": {
-      "@types": ["./src/types"]
-    },
     "tsBuildInfoFile": "../../.cache/typescript/image-search-server.tsbuildinfo"
   },
   "include": ["./src/**/*", "./scripts/**/*", "./tests/**/*"]

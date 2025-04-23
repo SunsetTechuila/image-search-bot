@@ -56,17 +56,6 @@ export default typescriptEslint.config({
     "import-x/no-mutable-exports": "error",
     "import-x/no-absolute-path": "error",
     "import-x/no-cycle": "error",
-    "no-restricted-imports": [
-      "error",
-      {
-        patterns: [
-          {
-            group: ["../../*"],
-            message: "Usage of relative parent imports is not allowed.",
-          },
-        ],
-      },
-    ],
     "import-x/no-useless-path-segments": "error",
     "import-x/first": "error",
   },

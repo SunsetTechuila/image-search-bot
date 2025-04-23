@@ -1,6 +1,6 @@
 import { Elysia } from "elysia";
 
-import type { ILogger, Macro } from "@types";
+import type { ILogger, Macro } from "../../types";
 
 export interface PasswordCheckerOptions {
   logger?: ILogger;

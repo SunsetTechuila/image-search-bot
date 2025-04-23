@@ -1,4 +1,4 @@
-import type { ILogger } from "@types";
+import type { ILogger } from "../../types";
 
 export type LogLevelName = (typeof Logger.LOG_LEVEL_NAMES)[keyof typeof Logger.LOG_LEVEL_NAMES];
 type LogLevel = (typeof Logger.LOG_LEVELS)[keyof typeof Logger.LOG_LEVELS];
