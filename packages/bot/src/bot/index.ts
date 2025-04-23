@@ -8,7 +8,7 @@ import {
 } from "grammy";
 import { treaty } from "@elysiajs/eden";
 
-import { type ImageSearchServer, type SearchResult } from "image-search-server";
+import type { ImageSearchServer, SearchResult } from "image-search-server";
 
 export type FrameworkAdapter = Parameters<typeof webhookCallback>[1];
 
