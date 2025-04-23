@@ -5,6 +5,7 @@ import typescriptEslint from "typescript-eslint";
 import pluginSonarJs from "eslint-plugin-sonarjs";
 import pluginUnicorn from "eslint-plugin-unicorn";
 import pluginImportX from "eslint-plugin-import-x";
+import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
 import configPrettier from "eslint-config-prettier";
 
 export default typescriptEslint.config({
@@ -30,12 +31,12 @@ export default typescriptEslint.config({
     },
   },
   settings: {
-    "import-x/resolver": {
-      typescript: {
-        alwaysTryTypes: true,
+    "import-x/resolver-next": [
+      createTypeScriptImportResolver({
+        bun: true,
         project: "./**/tsconfig.json",
-      },
-    },
+      }),
+    ],
   },
   rules: {
     "unicorn/filename-case": [
