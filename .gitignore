@@ -1,4 +1,5 @@
 node_modules/
 .env*
+!.env.example
 .cache/
 image-search-server.tar*
