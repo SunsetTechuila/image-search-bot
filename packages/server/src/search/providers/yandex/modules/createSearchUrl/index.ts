@@ -1,9 +1,9 @@
-const baseUrl = "https://yandex.com/images/search";
+const BASE_URL = "https://yandex.com/images/search";
 
 export function createSearchUrl(searchQuery: string, page = 0): string {
   const queryParameters = {
     format: "json",
-    request: requestBlock,
+    request: REQUEST_BLOCK,
     text: searchQuery,
     p: page,
   };
@@ -15,10 +15,10 @@ export function createSearchUrl(searchQuery: string, page = 0): string {
     )
     .join("&");
 
-  return `${baseUrl}?${encodedQuery}`;
+  return `${BASE_URL}?${encodedQuery}`;
 }
 
-const requestBlock = JSON.stringify({
+const REQUEST_BLOCK = JSON.stringify({
   blocks: [
     {
       block: {

@@ -1,9 +1,11 @@
 import { z } from "zod";
 import { Elysia } from "elysia";
 
-import { YandexSearchProvider, PasswordChecker, Logger, type SearchResult } from "./modules";
+import { YandexSearchProvider } from "./search/providers";
+import { PasswordChecker } from "./authentification";
+import { ConsoleLogger } from "./logging";
 
-export type { SearchResult };
+export type { SearchResult } from "./interfaces";
 export type ImageSearchServer = typeof imageSearchServer;
 
 const EnvironmentVariablesSchema = z.object({
@@ -24,9 +26,9 @@ const {
 } = EnvironmentVariablesSchema.parse(process.env);
 
 const passwordChecker = new PasswordChecker(SEARCH_SERVER_PASSWORD, {
-  logger: new Logger(PasswordChecker.pluginName),
+  logger: new ConsoleLogger({ componentName: PasswordChecker.pluginName }),
 });
-const mainLogger = new Logger("Server");
+const mainLogger = new ConsoleLogger({ componentName: "Server" });
 
 mainLogger.info("Starting server...");
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -41,7 +43,7 @@ const imageSearchServer = new Elysia({
   .use(
     (
       await YandexSearchProvider.create({
-        logger: new Logger(YandexSearchProvider.name),
+        logger: new ConsoleLogger({ componentName:YandexSearchProvider.name}),
         macros: [passwordChecker],
         telegramApiId: TELEGRAM_API_ID,
         telegramApiHash: TELEGRAM_API_HASH,

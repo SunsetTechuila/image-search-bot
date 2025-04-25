@@ -1,9 +1,9 @@
 import { Elysia } from "elysia";
 
-import type { ILogger, Macro } from "../..";
+import type { Logger, Macro } from "../../interfaces";
 
 export interface PasswordCheckerOptions {
-  logger?: ILogger;
+  logger?: Logger;
   skipOnDevelopment?: boolean;
 }
 
@@ -14,7 +14,7 @@ export class PasswordChecker implements Macro {
 
   readonly #password: string;
 
-  readonly #logger?: ILogger;
+  readonly #logger?: Logger;
 
   readonly #skipOnDevelopment: boolean;
 

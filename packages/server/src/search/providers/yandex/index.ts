@@ -1,11 +1,10 @@
 import { Elysia, t } from "elysia";
 
-import type { ILogger, Plugin, Macro } from "../../..";
-import type { SearchResult } from "..";
+import type { Logger, Plugin, Macro, SearchResult } from "../../../interfaces";
 import { TelegramFetcher, createSearchUrl, transformSearchResult } from "./modules";
 
 export interface YandexSearchProviderOptions {
-  logger?: ILogger;
+  logger?: Logger;
   macros?: Macro[];
   telegramApiId: number;
   telegramApiHash: string;
@@ -15,13 +14,13 @@ export interface YandexSearchProviderOptions {
 export class YandexSearchProvider implements Plugin {
   static readonly name = "Yandex Search Provider";
 
-  readonly #logger?: ILogger;
+  readonly #logger?: Logger;
 
   readonly #macros?: Macro[];
 
   readonly #telegramFetcher: TelegramFetcher;
 
-  private constructor(telegramFetcher: TelegramFetcher, logger?: ILogger, macros?: Macro[]) {
+  private constructor(telegramFetcher: TelegramFetcher, logger?: Logger, macros?: Macro[]) {
     this.#logger = logger;
     this.#macros = macros;
     this.#telegramFetcher = telegramFetcher;

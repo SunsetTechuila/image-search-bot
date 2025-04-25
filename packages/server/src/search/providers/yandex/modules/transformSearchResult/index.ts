@@ -1,5 +1,6 @@
 import { z } from "zod";
-import type { SearchResult } from "../../..";
+
+import type { SearchResult } from "../../../../../interfaces";
 
 export function transformSearchResult(searchResult: string): SearchResult[] {
   const { blocks } = SearchResultSchema.parse(JSON.parse(searchResult));
