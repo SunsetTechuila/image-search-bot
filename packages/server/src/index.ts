@@ -5,7 +5,7 @@ import { YandexSearchProvider } from "./search/providers";
 import { PasswordChecker } from "./authentification";
 import { ConsoleLogger } from "./logging";
 
-export type { SearchResult } from "./interfaces";
+export type { SearchResult } from "./search/interfaces";
 export type ImageSearchServer = typeof imageSearchServer;
 
 const EnvironmentVariablesSchema = z.object({

@@ -2,7 +2,7 @@ import { test, expect, describe, beforeAll, setDefaultTimeout } from "bun:test";
 
 import { Elysia, type AnyElysia } from "elysia";
 
-import type { SearchResult } from "../../../interfaces";
+import type { SearchResult } from "../../interfaces";
 import { YandexSearchProvider } from ".";
 
 describe("YandexSearchProvider", () => {
