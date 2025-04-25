@@ -35,7 +35,7 @@ export class TelegramFetcher {
 
     if (!TelegramFetcher.#isWebPageWithDocument(webpage)) {
       if (remainingRetries < 1) throw new Error("Failed to fetch webpage content");
-      await Bun.sleep(1000);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       return await this.fetchFile(url, remainingRetries);
     }
 
