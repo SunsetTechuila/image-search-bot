@@ -64,21 +64,6 @@ for (const logger of loggers) {
       errorSpy.mockRestore();
     });
 
-    test("should default to INFO level if LOG_LEVEL is not set", () => {
-      delete options.logLevel;
-      const defaultLogger = new loggerClass(options);
-
-      defaultLogger.debug("Debug message");
-      defaultLogger.info("Info message");
-      defaultLogger.warn("Warn message");
-      defaultLogger.error("Error message");
-
-      expect(debugSpy).not.toHaveBeenCalled();
-      expect(infoSpy).toHaveBeenCalledTimes(1);
-      expect(warnSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(1);
-    });
-
     test("should respect DEBUG log level", () => {
       options.logLevel = Logger.LOG_LEVELS.DEBUG;
       const debugLogger = new loggerClass(options);
@@ -122,16 +107,6 @@ for (const logger of loggers) {
       expect(infoSpy).not.toHaveBeenCalled();
       expect(warnSpy).not.toHaveBeenCalled();
       expect(errorSpy).toHaveBeenCalledTimes(1);
-    });
-
-    test("should throw an error for invalid log levels", () => {
-      // @ts-expect-error this is a test for invalid log levels
-      options.logLevel = 10;
-
-      expect(() => {
-        // eslint-disable-next-line sonarjs/constructor-for-side-effects
-        new loggerClass(options);
-      }).toThrowError();
     });
 
     test("should format log messages correctly", () => {

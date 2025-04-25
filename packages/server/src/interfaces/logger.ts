@@ -1,13 +1,14 @@
 /**
  * @param componentName The name of the component using this logger that will be prefixed to all log messages
- * @param logLevel The log level for this logger. Defaults to INFO.
+ * @param logLevel The lowest type of logs you want to see for this logger. See `Logger.LOG_LEVELS` for available log levels
  */
 export interface LoggerOptions {
   componentName: string;
-  logLevel?: LogLevel;
+  logLevel: LogLevel;
 }
 
 export type LogLevel = (typeof Logger.LOG_LEVELS)[keyof typeof Logger.LOG_LEVELS];
+export type LogLevelName = (typeof Logger.LOG_LEVEL_NAMES)[keyof typeof Logger.LOG_LEVEL_NAMES];
 
 export abstract class Logger {
   public static readonly LOG_LEVELS = {
@@ -17,7 +18,7 @@ export abstract class Logger {
     ERROR: 3,
   } as const;
 
-  protected static readonly LOG_LEVEL_NAMES = {
+  public static readonly LOG_LEVEL_NAMES = {
     [Logger.LOG_LEVELS.DEBUG]: "DEBUG",
     [Logger.LOG_LEVELS.INFO]: "INFO",
     [Logger.LOG_LEVELS.WARN]: "WARN",
@@ -30,16 +31,7 @@ export abstract class Logger {
 
   public constructor(options: LoggerOptions) {
     this.componentName = options.componentName;
-
-    const { logLevel } = options;
-    if (logLevel == undefined) {
-      this.targetLogLevel = logLevel ?? Logger.LOG_LEVELS.INFO;
-    } else {
-      if (!Object.values(Logger.LOG_LEVELS).includes(logLevel)) {
-        throw new Error(`Invalid log level: ${options.logLevel}`);
-      }
-      this.targetLogLevel = logLevel;
-    }
+    this.targetLogLevel = options.logLevel;
   }
 
   public debug(message: string): void {
