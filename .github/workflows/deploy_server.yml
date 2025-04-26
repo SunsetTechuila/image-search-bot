@@ -52,7 +52,7 @@ jobs:
     runs-on: ubuntu-24.04-arm
     steps:
       - name: Download image
-        uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: ${{ needs.build_server.outputs.artifact_name }}
 
@@ -67,7 +67,7 @@ jobs:
         run: scp image-search-server.tar docker-compose.yml ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/tmp/
 
       - name: Run container
-        uses: appleboy/ssh-action@0e19dd962da42eb2f2b775d6e133dc9dfd424aa6
+        uses: appleboy/ssh-action@2ead5e36573f08b82fbfce1504f1a4b05a647c6f
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
