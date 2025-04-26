@@ -109,13 +109,6 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
-      - name: Cache tools cache
-        uses: actions/cache@v4
-        with:
-          path: .cache
-          key: tools-${{ runner.os }}-${{ github.sha }}
-          restore-keys: tools-${{ runner.os }}-
-
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
 
