@@ -27,12 +27,12 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Cache tools cache
+      - name: Cache checking results
         uses: actions/cache@v4
         with:
           path: .cache
-          key: tools-${{ runner.os }}-${{ github.sha }}
-          restore-keys: tools-${{ runner.os }}-
+          key: formatting-${{ inputs.cwd }}-${{ runner.os }}-${{ github.sha }}
+          restore-keys: formatting-${{ inputs.cwd }}-${{ runner.os }}-
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -53,12 +53,12 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Cache tools cache
+      - name: Cache checking results
         uses: actions/cache@v4
         with:
           path: .cache
-          key: tools-${{ runner.os }}-${{ github.sha }}
-          restore-keys: tools-${{ runner.os }}-
+          key: typecheck-${{ inputs.cwd }}-${{ runner.os }}-${{ github.sha }}
+          restore-keys: typecheck-${{ inputs.cwd }}-${{ runner.os }}-
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -79,12 +79,12 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Cache tools cache
+      - name: Cache checking results
         uses: actions/cache@v4
         with:
           path: .cache
-          key: tools-${{ runner.os }}-${{ github.sha }}
-          restore-keys: tools-${{ runner.os }}-
+          key: linting-${{ inputs.cwd }}-${{ runner.os }}-${{ github.sha }}
+          restore-keys: linting-${{ inputs.cwd }}-${{ runner.os }}-
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
