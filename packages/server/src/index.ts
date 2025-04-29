@@ -2,7 +2,7 @@ import { z } from "zod";
 import { Elysia } from "elysia";
 
 import { YandexSearchProvider } from "./search/providers";
-import { PasswordChecker } from "./authentification";
+import { PasswordChecker } from "./authentication";
 import { type LogLevelName, Logger } from "./interfaces";
 import { ConsoleLogger } from "./logging";
 
